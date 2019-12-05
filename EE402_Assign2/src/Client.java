@@ -46,6 +46,22 @@ public class Client {
     	}
     	System.out.println("06. -- Disconnected from Server.");
     }
+    
+    private void getTemp() {
+    	String theDateCommand = "GetTemp";
+    	Float	tempService;
+    	System.out.println("01. -> Sending Command (" + theDateCommand + ") to the server...");
+    	this.send(theDateCommand);
+    	try{
+    		tempService = (Float) receive();
+    		System.out.println("05. <- The Server responded with: ");
+    		System.out.println("    <- " + tempService);
+    	}
+    	catch (Exception e){
+    		System.out.println("XX. There was an invalid object sent back from the server");
+    	}
+    	System.out.println("06. -- Disconnected from Server.");
+    }
 	
     // method to send a generic object.
     private void send(Object o) {
@@ -79,7 +95,7 @@ public class Client {
     	System.out.println("**. Java Client Application - EE402 OOP Module, DCU");
     	if(args.length==1){
     		Client theApp = new Client(args[0]);
-		    theApp.getDate();
+		    theApp.getTemp();
 		}
     	else
     	{
