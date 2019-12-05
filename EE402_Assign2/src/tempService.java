@@ -10,7 +10,7 @@ import java.io.IOException;
 
 public class tempService {
 
-	private static String TEMP_PATH = "/sys/class/thermal/thermal_zone0/temp";
+	private String TEMP_PATH = "/sys/class/thermal/thermal_zone0/temp";
 	public tempService()
 	   {
 		 System.out.println("temp service created");

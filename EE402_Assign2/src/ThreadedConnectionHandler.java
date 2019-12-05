@@ -8,7 +8,7 @@ public class ThreadedConnectionHandler extends Thread
     private ObjectInputStream is = null;                        // Input stream
     private ObjectOutputStream os = null;                        // Output stream
     private DateTimeService theDateService;
-    private tempService myTempService;
+    
     
         // The constructor for the connection handler
     public ThreadedConnectionHandler(Socket clientSocket) {
@@ -49,6 +49,7 @@ public class ThreadedConnectionHandler extends Thread
             this.getDate(); 
         }
         else if(s.equalsIgnoreCase("GetTemp")){ 
+        	System.out.println("Get's here");
             this.getTemp(); 
         }
         else { 
@@ -63,6 +64,8 @@ public class ThreadedConnectionHandler extends Thread
         this.send(currentDateTimeText);
     }
     private void getTemp(){
+    	System.out.println("Get's here 2");
+    	tempService myTempService = new tempService();
     	float currentTemp= myTempService.getTemperature();
     	this.send(currentTemp);
     }
