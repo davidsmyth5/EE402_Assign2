@@ -7,7 +7,7 @@ public class ThreadedServer {
 
 	public static void main(String[] args) {
 		// TODO Auto-generated method stub
-		System.out.print("Hello World");
+		System.out.println("Welcome");
 		
 		
 			
@@ -18,7 +18,7 @@ public class ThreadedServer {
 	        try 
 	        {
 	            serverSocket = new ServerSocket(portNumber);
-	            System.out.println("New Server has started listening on port: " + portNumber );
+	            System.out.println("Raspberry Pi Server has started listening on port: " + portNumber );
 	        } 
 	        catch (IOException e) 
 	        {

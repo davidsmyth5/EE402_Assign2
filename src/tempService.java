@@ -4,11 +4,12 @@ import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.io.Serializable;
 
 
 
 
-public class tempService {
+public class tempService implements Serializable {
 
 	private String TEMP_PATH = "/sys/class/thermal/thermal_zone0/temp";
 	public tempService()

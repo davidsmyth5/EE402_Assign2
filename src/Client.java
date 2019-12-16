@@ -1,11 +1,15 @@
 import java.net.*;
 import java.io.*;
+
+import javax.swing.SwingUtilities;
 public class Client {
 	
-	private static int portNumber = 5050;
+	private static int portNumber;
     private Socket socket = null;
     private ObjectOutputStream os = null;
     private ObjectInputStream is = null;
+    public static String IPADDRESS;
+    
     
     public Client(){};
 	// the constructor expects the IP address of the server - the port is fixed
@@ -48,11 +52,11 @@ public class Client {
     	System.out.println("06. -- Disconnected from Server.");
     }
     
-    public float getTemp() {
-    	String theDateCommand = "GetTemp";
-    	float	tempService=0;
-    	System.out.println("01. -> Sending Command (" + theDateCommand + ") to the server...");
-    	this.send(theDateCommand);
+    public Float getTemp() {
+    	String theTempCommand = "GetTemp";
+    	Float	tempService;
+    	System.out.println("01. -> Sending Command (" + theTempCommand + ") to the server...");
+    	this.send(theTempCommand);
     	try{
     		tempService = (Float) receive();
     		System.out.println("05. <- The Server responded with: ");
@@ -60,6 +64,8 @@ public class Client {
     	}
     	catch (Exception e){
     		System.out.println("XX. There was an invalid object sent back from the server");
+    		float f1=0;
+    		return f1 ;
     	}
     	System.out.println("06. -- Disconnected from Server.");
     	return tempService;
@@ -93,11 +99,11 @@ public class Client {
     }
 
     public static void main(String args[]) 
-    {
-    	new Gui();
-    	/*if(args.length==1){
-    		Client theApp = new Client(args[0]);
-		    theApp.getTemp();
+    {	portNumber=Integer.parseInt(args[1]);
+    	IPADDRESS=String. valueOf(args[0]);
+    	if(args.length==2){
+    		Client theApp = new Client(args[0]); 		
+    		SwingUtilities.invokeLater(new Gui());
 		}
     	else
     	{
@@ -105,6 +111,6 @@ public class Client {
     		System.out.println("Usage is:  java Client x.x.x.x  (e.g. java Client 192.168.7.2)");
     		System.out.println("      or:  java Client hostname (e.g. java Client localhost)");
     	}    
-    	System.out.println("**. End of Application.");*/
+    	System.out.println("**. End of Application.");
     }
 }

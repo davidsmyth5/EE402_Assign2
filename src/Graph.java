@@ -17,6 +17,7 @@ import javax.swing.JPanel;
 @SuppressWarnings("serial")
 public class Graph extends JPanel {
 	private List<Float> temperatures;
+	private List<Float> avgTemperatures = new ArrayList<>();
 	 private int width = 800;
 	    private int heigth = 400;
 	    private int padding = 25;
@@ -25,17 +26,16 @@ public class Graph extends JPanel {
 	    private Color pointColor = new Color(100, 100, 100, 180);
 	    private Color gridColor = new Color(200, 200, 200, 200);
 	    private static final Stroke GRAPH_STROKE = new BasicStroke(2f);
+	    private static final Stroke GRAPH_STROKE2 = new BasicStroke(2f);
 	    private int pointWidth = 4;
 	    private int numberYDivisions = 10;
 	 
 	public Graph(List<Float> temperatures) {
 	        this.temperatures=temperatures;
+	        setVisible(true);
 	    }
 	
-	@Override
-	public Dimension getPreferredSize() {
-	    return new Dimension(500, 500);
-	}
+	
 	
 	@Override
     protected void paintComponent(Graphics g) {
@@ -44,7 +44,7 @@ public class Graph extends JPanel {
         g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
 
         double xScale = ((double) getWidth() - (2 * padding) - labelPadding) / (temperatures.size() - 1);
-        double yScale = ((double) getHeight() - 2 * padding - labelPadding) / (getMaxTemperature() - getMinTemperature());
+        double yScale = ((double) getHeight() - 2 * padding - labelPadding) / ((getMaxTemperature()) - (getMinTemperature()));
 
         List<Point> graphPoints = new ArrayList<>();
         for (int i = 0; i < temperatures.size(); i++) {
@@ -52,13 +52,19 @@ public class Graph extends JPanel {
             int y1 = (int) ((getMaxTemperature() - temperatures.get(i)) * yScale + padding);
             graphPoints.add(new Point(x1, y1));
         }
+        List<Point> graphPoints2 = new ArrayList<>();
+        for (int i = 0; i < avgTemperatures.size(); i++) {
+            int x1 = (int) (i * xScale + padding + labelPadding);
+            int y1 = (int) ((getMaxTemperature() - avgTemperatures.get(i)) * yScale + padding);
+            graphPoints2.add(new Point(x1, y1));
+        }
 
         // draw white background
         g2.setColor(Color.WHITE);
         g2.fillRect(padding + labelPadding, padding, getWidth() - (2 * padding) - labelPadding, getHeight() - 2 * padding - labelPadding);
         g2.setColor(Color.BLACK);
 
-        // create hatch marks and grid lines for y axis.
+        // create marks and grid lines for y axis.
         for (int i = 0; i < numberYDivisions + 1; i++) {
             int x0 = padding + labelPadding;
             int x1 = pointWidth + padding + labelPadding;
@@ -76,7 +82,7 @@ public class Graph extends JPanel {
             g2.drawLine(x0, y0, x1, y1);
         }
 
-        // and for x axis
+        // and for marks and gridlines creating x axis
         for (int i = 0; i < temperatures.size(); i++) {
             if (temperatures.size() > 1) {
                 int x0 = i * (getWidth() - padding * 2 - labelPadding) / (temperatures.size() - 1) + padding + labelPadding;
@@ -99,7 +105,8 @@ public class Graph extends JPanel {
         // create x and y axes 
         g2.drawLine(padding + labelPadding, getHeight() - padding - labelPadding, padding + labelPadding, padding);
         g2.drawLine(padding + labelPadding, getHeight() - padding - labelPadding, getWidth() - padding, getHeight() - padding - labelPadding);
-
+        
+        //drawline for tempertaures
         Stroke oldStroke = g2.getStroke();
         g2.setColor(lineColor);
         g2.setStroke(GRAPH_STROKE);
@@ -109,8 +116,31 @@ public class Graph extends JPanel {
             int x2 = graphPoints.get(i + 1).x;
             int y2 = graphPoints.get(i + 1).y;
             g2.drawLine(x1, y1, x2, y2);
+            
         }
-
+        
+      //drawline for average tempertaures
+        /*Stroke oldStroke2 = g2.getStroke();
+        g2.setStroke(GRAPH_STROKE2);
+        g2.setColor(Color.GREEN);
+        for (int i = 0; i < graphPoints2.size() - 1; i++) {
+            int x3 = graphPoints2.get(i).x;
+            int y3 = graphPoints2.get(i).y;
+            int x4 = graphPoints2.get(i + 1).x;
+            int y4 = graphPoints2.get(i + 1).y;
+            g2.drawLine(x3, y3, x4, y4);
+        }
+        g2.setStroke(oldStroke2);
+        g2.setStroke(oldStroke2);
+        g2.setColor(Color.orange);
+        for (int i = 0; i < graphPoints2.size(); i++) {
+            int x = graphPoints2.get(i).x - pointWidth ;
+            int y = graphPoints2.get(i).y - pointWidth ;
+            int ovalW = pointWidth;
+            int ovalH = pointWidth;
+            g2.fillOval(x, y, ovalW, ovalH);
+        }*/
+        
         g2.setStroke(oldStroke);
         g2.setColor(pointColor);
         for (int i = 0; i < graphPoints.size(); i++) {
@@ -137,10 +167,16 @@ public class Graph extends JPanel {
         return maxTemperature;
     }
 
-    public void settemperatures(List<Float> temperatures) {
-        this.temperatures = temperatures;
+    public void setAvgTemperatures(List<Float> temperatures) {
+        this.avgTemperatures = temperatures;
         invalidate();
         this.repaint();
+        
+    }
+    
+    public void setTemperatures(List<Float> temperatures) {
+        this.temperatures = temperatures;
+        invalidate();      
     }
 
     public List<Float> gettemperatures() {
